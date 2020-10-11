@@ -1,0 +1,33 @@
+import empresas.*
+import profesionales.*
+import universidades.*
+
+test "etapa1"{
+	// universidades
+	const sanMartin = new Universidad(honorariosRecomendados = 3500, provincia = ["BuenosAires"])
+    const rosario = new Universidad(honorariosRecomendados = 2800, provincia = ["SantaFe"])
+    const corrientes = new Universidad(honorariosRecomendados = 4200, provincia = ["corrientes"])
+	const hurlingham = new Universidad(honorariosRecomendados = 8800, provincia = ["BuenosAires"])
+	// profesionales
+	const juana = new ProfesionalVinculado(universidad = rosario)
+	const melina = new ProfesionalAsociado(universidad = corrientes)
+	const rocio = new ProfesionalLibre(universidad = hurlingham, honorariosPorHora = 5000)
+	const luciana = new ProfesionalLibre(universidad = rosario, honorariosPorHora = 3200)
+	//empresa
+	const empre = new EmpresaDeServicio(honorarioDeReferencia = 3500 )
+	
+	
+	luciana.agregarProvincias(#{"santaFe", "entreRios"})
+	rocio.agregarProvincias(#{"santaFe", "cordoba", "BuenosAires"})
+	empre.contratarProfesionales([juana, melina, rocio, luciana])
+
+	
+	assert.equals(2, empre.cuantosEstudiaronEn(rosario))
+	assert.equals(1, empre.cuantosEstudiaronEn(hurlingham))
+	assert.equals(0, empre.cuantosEstudiaronEn(sanMartin))
+	assert.equals(#{rocio}, empre.profesionalesCaros())
+	assert.equals(#{rosario, corrientes, hurlingham}, empre.universidadesFormadoras())
+	assert.equals(juana, empre.profesionalMasBarato())
+	assert.that(empre.genteAcotada())
+}
+
